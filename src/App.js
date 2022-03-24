@@ -2,28 +2,21 @@ import React, {useState} from 'react'
 import CComponent from './CComponent';
 import { CounterContext } from './CounterContext';
 import FComponent from './FComponent';
+import ScreenComponent from './ScreenComponent';
+import useCounter from './useCounter';
 
 export const App = () => {
-  const [counter, setCounter] = useState(0);
-  const increment = () => {
-    setCounter(counter + 1)
-  }
-
-  const decrement = () => {
-    setCounter(counter - 1)
-  }
+  const [counter, increment, decrement, reset] = useCounter(2);
+  
   return (
     <div>
-      <h1>App Component</h1>
+      <h1>Custom Hook Example</h1>
       <h2>{counter}</h2>
       <button onClick={increment}>Increment</button>
       <button onClick={decrement}>Decrement</button>
+      <button onClick={reset}>Reset</button>
       <hr></hr>
-      <CounterContext.Provider value={{counter, setCounter}}>
-      <FComponent  />
-      <hr></hr>
-      {/* <CComponent  /> */}
-      </CounterContext.Provider>
+      <ScreenComponent />
     </div>
   )
 }
