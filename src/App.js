@@ -1,31 +1,56 @@
-import React, {useState} from 'react'
-import CComponent from './CComponent';
-import { CounterContext } from './CounterContext';
-import FComponent from './FComponent';
+import React, { useMemo, useState } from 'react'
 
-export const App = () => {
-  const [counter, setCounter] = useState(0);
-  const increment = () => {
-    setCounter(counter + 1)
-  }
-
-  const decrement = () => {
-    setCounter(counter - 1)
-  }
+ const App = () => {
+   const [counter, setCounter] = useState(1)
+   const result = useMemo(() => {
+     return factorial(counter);
+   }, [counter]) 
+   const [name, setName] = useState('')
   return (
     <div>
-      <h1>App Component</h1>
-      <h2>{counter}</h2>
-      <button onClick={increment}>Increment</button>
-      <button onClick={decrement}>Decrement</button>
+      <h1>
+        Factorial of {counter} is: <span>{result}</span>
+      </h1>
+      <div>
+        <button onClick={() => setCounter(counter - 1)}>Decrement</button>
+        <button onClick={() => setCounter(counter + 1)}>Increment</button>
+      </div>
       <hr></hr>
-      <CounterContext.Provider value={{counter, setCounter}}>
-      <FComponent  />
-      <hr></hr>
-      {/* <CComponent  /> */}
-      </CounterContext.Provider>
+      <div>
+        <div>
+          <label>Enter Name</label>
+        </div>
+        <input
+        type="text"
+        placeholder="Enter Name" 
+        value={name}
+        onChange={(e) => setName(e.target.value) }
+        />
+        <hr></hr>
+        <DisplayName name={name}/>
+       
+      </div>
     </div>
   )
+}
+
+const DisplayName = React.memo(({name}) => {
+  console.log("rendered")
+  return (
+    <p>{`My name is ${name}`}</p>
+  )
+}, ) ;
+
+function factorial(n) {
+  let i = 0;
+
+  if (n < 0) {
+    return -1;
+  } 
+  if (n === 0) {
+    return 1;
+  }
+  return n*factorial(n-1);
 }
 
 
