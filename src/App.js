@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useEffect, useCallback } from 'react'
 
  const App = () => {
    const [counter, setCounter] = useState(1)
@@ -6,6 +6,12 @@ import React, { useMemo, useState } from 'react'
      return factorial(counter);
    }, [counter]) 
    const [name, setName] = useState('')
+
+   const displayName = useCallback((greeting) => {
+    return greeting + " " + name;
+  }, [name])
+
+  
   return (
     <div>
       <h1>
@@ -27,19 +33,24 @@ import React, { useMemo, useState } from 'react'
         onChange={(e) => setName(e.target.value) }
         />
         <hr></hr>
-        <DisplayName name={name}/>
+        <DisplayName displayName={displayName}/>
        
       </div>
     </div>
   )
 }
 
-const DisplayName = React.memo(({name}) => {
-  console.log("rendered")
+const DisplayName = ({displayName}) => {
+  const [value, setValue] = useState('');
+  useEffect(() => {
+   setValue(displayName("Hello"));
+   console.log("component rendered")
+  }, [displayName])
+  
   return (
-    <p>{`My name is ${name}`}</p>
+    <p>{`My name is ${value}`}</p>
   )
-}, ) ;
+};
 
 function factorial(n) {
   let i = 0;
