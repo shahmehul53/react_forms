@@ -1,25 +1,20 @@
-import React, {useState} from 'react'
-import CComponent from './CComponent';
-import { CounterContext } from './CounterContext';
-import FComponent from './FComponent';
-import ScreenComponent from './ScreenComponent';
-import useCounter from './useCounter';
+import React from 'react'
+import useFetch from './useFetch'
 
-export const App = () => {
-  const [counter, increment, decrement, reset] = useCounter(2);
-  
+
+const App = () => {
+  const BASE_URL = "https://reqres.in/api/users/"
+const {data: users, loading,  error} = useFetch(BASE_URL)
   return (
-    <div>
-      <h1>Custom Hook Example</h1>
-      <h2>{counter}</h2>
-      <button onClick={increment}>Increment</button>
-      <button onClick={decrement}>Decrement</button>
-      <button onClick={reset}>Reset</button>
-      <hr></hr>
-      <ScreenComponent />
+    <div className="App">
+      <h1>Custom React Hook (Data Fetching)</h1>
+      {loading && <h3>Loading...</h3>}
+      {error && <h3>Error: Something Went Wrong</h3>}
+      <div>
+        <pre>{JSON.stringify(users, undefined, 2)}</pre>
+      </div>
     </div>
   )
 }
 
-
-export default App;
+export default App
